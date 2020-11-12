@@ -14,7 +14,6 @@
   <style>
     #video-grid {
       display: grid;
-      padding-left:100px;
       grid-template-columns: repeat(auto-fill, 300px);
       grid-auto-rows: 300px;
     }
@@ -27,14 +26,6 @@
   </style>
 </head>
 <body>
-  <div id="video-grid"> 
-</div>
-<p id="demo"></p>
-<script>
-  var myVar = setInterval(myTimer, 100);
-  function myTimer() {
-  var d = new Date();
-  document.getElementById("demo").innerHTML = d.toLocaleTimeString();}
-  </script>
+  <div id="video-grid"></div>
 </body>
 </html>
