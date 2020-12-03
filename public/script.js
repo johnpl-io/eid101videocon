@@ -1,9 +1,13 @@
-const socket = io('/')
+const socket = io('http://localhost:3000')
 const videoGrid = document.getElementById('video-grid')
 const myPeer = new Peer(undefined, {
   host: '/',
   port: '3001'
 })
+
+const messageContainer = document.getElementById('message-container')
+const messageForm = document.getElementById('send-container')
+const messageInput = document.getElementById('message-input')
 const myVideo = document.createElement('video')
 myVideo.muted = true
 const peers = {}
@@ -24,6 +28,20 @@ navigator.mediaDevices.getUserMedia({
   socket.on('user-connected', userId => {
     connectToNewUser(userId, stream)
   })
+})
+
+messageForm.addEventListener('submit', e => {
+  e.preventDefault()
+  const message = messageInput.value 
+  socket.emit('send-chat-message', message)
+  messageInput.value = ''
+})
+
+
+
+
+socket.on('chat=message', data => {
+  appendMessage(data)
 })
 
 socket.on('user-disconnected', userId => {
@@ -53,4 +71,11 @@ function addVideoStream(video, stream) {
     video.play()
   })
   videoGrid.append(video)
+}
+
+function appendMessage(message) { 
+  const messageElement = document.createElement('div')
+  messageElement.innerText = message
+  messageContainer.append(messageElement)
+
 }

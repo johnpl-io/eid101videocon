@@ -16,9 +16,15 @@ app.get('/:room', (req, res) => {
 })
 
 io.on('connection', socket => {
+  console.log('new User')
+  socket.emit('chat-message', 'Hello World')
+  socket.on('send-chat-message', message => {
+    socket.broadcast.emit('chat-message', message)
+  })
   socket.on('join-room', (roomId, userId) => {
     socket.join(roomId)
     socket.to(roomId).broadcast.emit('user-connected', userId)
+    
 
     socket.on('disconnect', () => {
       socket.to(roomId).broadcast.emit('user-disconnected', userId)
